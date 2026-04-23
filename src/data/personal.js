@@ -1,6 +1,6 @@
 export const personalInfo = {
   name: "Manish",
-  fullName: "Manish Pradeep Suryawanshi",
+  fullName: "Manish Suryawanshi",
   role: "Full-Stack Developer | AI SaaS Builder",
   tagline: "Building the future with AI & full-stack development.",
   roles: [

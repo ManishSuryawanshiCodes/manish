@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, Suspense, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF, useAnimations, PerspectiveCamera, Environment, ContactShadows, Float, Html } from '@react-three/drei';
+import { useGLTF, useAnimations, PerspectiveCamera, Environment, ContactShadows, Float, Html, Preload } from '@react-three/drei';
 import * as THREE from 'three';
 
 // Error Boundary
@@ -23,7 +23,7 @@ const AvatarModel = ({ scrollY, isScrolling, activeSection }) => {
   
   const [activeAnim, setActiveAnim] = useState('Idle');
 
-  // Initial greeting
+  // Initial greeting as April
   useEffect(() => {
     if (actions && actions['Wave']) {
       actions['Wave'].reset().fadeIn(0.5).play();
@@ -35,7 +35,7 @@ const AvatarModel = ({ scrollY, isScrolling, activeSection }) => {
     }
   }, [actions]);
 
-  // Animation logic
+  // Enhanced Animation Logic
   useEffect(() => {
     if (!actions || activeAnim === 'Wave' && actions['Wave'].isRunning()) return;
     
@@ -48,6 +48,8 @@ const AvatarModel = ({ scrollY, isScrolling, activeSection }) => {
       nextAnim = 'Jump';
     } else if (activeSection === 'contact') {
       nextAnim = 'Wave';
+    } else if (activeSection === 'about') {
+      nextAnim = 'ThumbsUp';
     }
 
     if (activeAnim !== nextAnim && actions[nextAnim]) {
@@ -61,19 +63,23 @@ const AvatarModel = ({ scrollY, isScrolling, activeSection }) => {
     const mouse = state.mouse;
     const time = state.clock.getElapsedTime();
     
-    // 1. Head Tracking
+    // 1. Head Tracking (Intelligence)
     const head = scene.getObjectByName('Head');
     if (head) {
       head.rotation.y = THREE.MathUtils.lerp(head.rotation.y, mouse.x * 0.4, 0.1);
       head.rotation.x = THREE.MathUtils.lerp(head.rotation.x, -mouse.y * 0.2, 0.1);
     }
 
-    // 2. Side-by-side Rotation (Oscillation)
-    group.current.rotation.y = Math.sin(time * 0.5) * 0.2 + mouse.x * 0.2;
+    // 2. Side-by-side Smooth Oscillation
+    group.current.rotation.y = Math.sin(time * 0.4) * 0.15 + mouse.x * 0.2;
 
-    // 3. Dynamic Vertical Movement (Jumping/Floating)
-    const floatHeight = isScrolling ? 0.3 : Math.sin(time * 2) * 0.1;
-    group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, floatHeight - 2.5, 0.1);
+    // 3. Dynamic Physics-based Movement
+    const floatHeight = isScrolling ? 0.35 : Math.sin(time * 1.8) * 0.12;
+    group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, floatHeight - 2.6, 0.1);
+    
+    // 4. Subtle "Breathing" Scale Effect
+    const breathingScale = 0.7 + Math.sin(time * 2) * 0.005;
+    group.current.scale.set(breathingScale, breathingScale, breathingScale);
   });
 
   return (
@@ -119,18 +125,27 @@ const Avatar3D = () => {
   }, []);
 
   const sectionMessages = {
-    home: "Hi! I'm Manish Suryawanshi 👋",
-    about: "Exploring my story... 📖",
-    skills: "Look at these skills! ⚡",
-    projects: "Time to dance for my work! 💃",
-    resume: "My professional journey 📄",
-    contact: "Wave hello to start a chat! ✉️"
+    home: "Hi! I'm April, Manish's AI Assistant 👋",
+    about: "I've helped Manish build amazing things! 🤖",
+    skills: "This arsenal is quite impressive! ⚡",
+    projects: "Shall we dance for these builds? 💃",
+    resume: "Manish's journey is truly unique 📄",
+    contact: "Send a message to my creator! ✉️"
   };
 
   return (
     <div className="fixed-avatar-container">
       <ErrorBoundary>
-        <Canvas shadows dpr={[1, 1.5]} gl={{ alpha: true, antialias: true, shadowMapType: THREE.PCFShadowMap }}>
+        <Canvas 
+          shadows 
+          dpr={[1, 1.5]} 
+          gl={{ 
+            alpha: true, 
+            antialias: true, 
+            powerPreference: "high-performance",
+            preserveDrawingBuffer: true 
+          }}
+        >
           <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={35} />
           <ambientLight intensity={1} />
           <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} />
@@ -140,12 +155,13 @@ const Avatar3D = () => {
             <AvatarModel scrollY={scrollY} isScrolling={isScrolling} activeSection={activeSection} />
             <Environment preset="city" />
             <ContactShadows opacity={0.4} scale={10} blur={2.5} far={4} />
+            <Preload all />
           </Suspense>
         </Canvas>
       </ErrorBoundary>
       
       <div className="avatar-interaction-bubble glass-card">
-        <p>{sectionMessages[activeSection] || "Exploring..."}</p>
+        <p>{sectionMessages[activeSection] || "Scanning..."}</p>
         <div className="bubble-tail"></div>
       </div>
     </div>
