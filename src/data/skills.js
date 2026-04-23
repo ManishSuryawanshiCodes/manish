@@ -1,27 +1,31 @@
 export const skillsData = [
   {
-    category: "Programming Languages",
-    skills: ["JavaScript", "Python", "Java (Java 17)", "C", "SQL"]
+    category: "Core Programming Languages",
+    skills: ["JavaScript", "TypeScript", "Python", "Java (Java 17)", "C", "C++", "SQL"]
   },
   {
-    category: "Frontend Technologies",
-    skills: ["React.js", "HTML5", "CSS3", "Tailwind CSS", "Bootstrap", "Flutter"]
+    category: "Frontend, Web & UI/UX",
+    skills: ["React.js", "Next.js", "HTML5", "CSS3", "Tailwind CSS", "Bootstrap", "Flutter", "Glassmorphism", "Parallax Physics"]
   },
   {
-    category: "Backend Technologies",
-    skills: ["Node.js", "Express.js", "JSP", "Servlets"]
+    category: "Backend & API Engineering",
+    skills: ["Node.js", "Express.js", "Java Servlets", "JSP", "Postman", "RESTful Architecture"]
   },
   {
-    category: "Databases",
-    skills: ["MongoDB Atlas", "MySQL", "Firebase"]
+    category: "Databases & BaaS",
+    skills: ["MongoDB (Atlas)", "Supabase", "Firebase", "MySQL"]
   },
   {
-    category: "Tools & Cloud Platforms",
-    skills: ["Git", "GitHub", "Vercel", "Railway", "Apache Tomcat", "Streamlit", "Notion"]
+    category: "AI, LLMs & Machine Learning",
+    skills: ["Claude", "OpenAI", "Gemini", "RAG", "Model Fine-Tuning", "Vector Search", "Prompt Engineering", "Streamlit"]
   },
   {
-    category: "Core Competencies",
-    skills: ["AI SaaS Development", "RAG", "Prompt Engineering", "REST APIs", "Modern UI Design", "Session Management"]
+    category: "Cloud, DevOps & Infrastructure",
+    skills: ["Docker", "Vercel", "Render", "Railway", "Apache Tomcat", "Git", "GitHub"]
+  },
+  {
+    category: "Automation & Workflow",
+    skills: ["n8n", "Notion Automation", "Smart Input Logic", "AI Task Execution"]
   }
 ];
 

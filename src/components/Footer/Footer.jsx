@@ -1,5 +1,6 @@
 import React from 'react';
-import { Heart } from 'lucide-react';
+import { Mail, ArrowUpCircle } from 'lucide-react';
+import { personalInfo } from '../../data/personal';
 import './Footer.css';
 
 const GithubIcon = () => (
@@ -17,41 +18,54 @@ const TwitterIcon = () => (
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <footer className="footer">
       <div className="container">
-        <div className="footer-content">
-          <div className="footer-logo">
-            <span className="logo-text">Manish</span>
-            <p>Full Stack Developer & AI Builder</p>
+        <div className="footer-top">
+          <div className="footer-brand">
+            <span className="logo-text gradient-text">Manish</span>
+            <p className="footer-tagline">Architecting intelligent, liquid-glass digital experiences.</p>
           </div>
 
-          <div className="footer-links">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#skills">Skills</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
+          <div className="footer-nav">
+            <h4>Quick Links</h4>
+            <div className="footer-links">
+              <a href="#home">Home</a>
+              <a href="#about">About</a>
+              <a href="#projects">Projects</a>
+              <a href="#contact">Contact</a>
+            </div>
           </div>
 
           <div className="footer-socials">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="social-icon glass-card">
-              <GithubIcon />
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-icon glass-card">
-              <LinkedinIcon />
-            </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-icon glass-card">
-              <TwitterIcon />
-            </a>
+            <h4>Connect</h4>
+            <div className="social-icons">
+              <a href={personalInfo.socials.github} target="_blank" rel="noopener noreferrer" className="social-btn glass-card">
+                <GithubIcon />
+              </a>
+              <a href={personalInfo.socials.linkedin} target="_blank" rel="noopener noreferrer" className="social-btn glass-card">
+                <LinkedinIcon />
+              </a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-btn glass-card">
+                <TwitterIcon />
+              </a>
+              <a href={`mailto:${personalInfo.socials.email}`} className="social-btn glass-card">
+                <Mail size={20} />
+              </a>
+            </div>
           </div>
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; {currentYear} Manish. All rights reserved.</p>
-          <p className="made-with">
-            Made with <Heart size={14} fill="var(--secondary-main)" color="var(--secondary-main)" /> using MERN Stack
-          </p>
+          <p className="copyright">&copy; {currentYear} Manish Pradeep Suryawanshi. All rights reserved.</p>
+          <button className="back-to-top" onClick={scrollToTop}>
+            <span>Back to top</span>
+            <ArrowUpCircle size={20} />
+          </button>
         </div>
       </div>
     </footer>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { useForm, ValidationError } from '@formspree/react';
+import { Mail, Phone, MapPin, Send, CheckCircle2, ArrowRight } from 'lucide-react';
 import { personalInfo } from '../../data/personal';
 import './Contact.css';
 
@@ -12,6 +13,35 @@ const LinkedinIcon = () => (
 );
 
 const Contact = () => {
+  const [state, handleSubmit] = useForm("xeevvznl");
+
+  if (state.succeeded) {
+    return (
+      <section id="contact" className="contact reveal">
+        <div className="container">
+          <div className="contact-success-wrapper glass-card">
+            <div className="success-lottie-placeholder">
+              <CheckCircle2 size={80} className="success-check-icon" />
+            </div>
+            <h2 className="success-title">Message Transmitted!</h2>
+            <p className="success-desc">
+              Your inquiry has been successfully routed to Manish's terminal. 
+              Expect a response within 24 hours.
+            </p>
+            <div className="success-actions">
+              <button className="btn btn-primary" onClick={() => window.location.reload()}>
+                Send Another Message
+              </button>
+              <a href="#projects" className="btn btn-secondary">
+                View My Projects <ArrowRight size={18} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="contact" className="contact reveal">
       <div className="container">
@@ -71,7 +101,7 @@ const Contact = () => {
           </div>
 
           <div className="contact-form-container">
-            <form className="contact-form glass-card" action="https://formspree.io/f/your-id" method="POST">
+            <form className="contact-form glass-card" onSubmit={handleSubmit}>
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="name">Full Name</label>
@@ -80,6 +110,7 @@ const Contact = () => {
                 <div className="form-group">
                   <label htmlFor="email">Email Address</label>
                   <input type="email" name="email" id="email" placeholder="john@example.com" required />
+                  <ValidationError prefix="Email" field="email" errors={state.errors} className="error-msg" />
                 </div>
               </div>
               
@@ -91,10 +122,11 @@ const Contact = () => {
               <div className="form-group">
                 <label htmlFor="message">Message</label>
                 <textarea name="message" id="message" rows="5" placeholder="Tell me more about your vision..." required></textarea>
+                <ValidationError prefix="Message" field="message" errors={state.errors} className="error-msg" />
               </div>
               
-              <button type="submit" className="btn btn-primary btn-block">
-                Transmit Message <Send size={18} />
+              <button type="submit" className="btn btn-primary btn-block" disabled={state.submitting}>
+                {state.submitting ? 'Transmitting...' : 'Transmit Message'} <Send size={18} />
               </button>
             </form>
           </div>

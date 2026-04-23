@@ -12,6 +12,8 @@ import { useScrollReveal } from './hooks/useScrollReveal';
 import { useTheme } from './hooks/useTheme';
 import './App.css';
 
+import Avatar3D from './components/Hero/Avatar3D';
+
 function App() {
   const { theme, toggleTheme } = useTheme();
   useScrollReveal('.reveal');
@@ -21,6 +23,9 @@ function App() {
       <ParticleBackground />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
       
+      {/* 3D Avatar now accompanies the user globally */}
+      <Avatar3D />
+
       <main>
         <Hero />
         <About />

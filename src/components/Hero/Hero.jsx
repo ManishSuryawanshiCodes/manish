@@ -2,6 +2,7 @@ import React from 'react';
 import { Download, ExternalLink, Sparkles } from 'lucide-react';
 import { personalInfo } from '../../data/personal';
 import { useTypewriter } from '../../hooks/useTypewriter';
+import Avatar3D from './Avatar3D';
 import './Hero.css';
 
 const Hero = () => {
@@ -42,18 +43,8 @@ const Hero = () => {
         </div>
         
         <div className="hero-visual">
-          <div className="hero-blob-container">
-            <div className="hero-blob"></div>
-            <div className="hero-image-card glass-card">
-              <img 
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Manish" 
-                alt="Manish Avatar" 
-                className="hero-avatar"
-              />
-              <div className="hero-tag-badge glass-card">
-                <p>Based in Pune</p>
-              </div>
-            </div>
+          <div className="hero-visual-fallback">
+            {/* Visual space is now managed by the global 3D Avatar */}
           </div>
         </div>
       </div>
