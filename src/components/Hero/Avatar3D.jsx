@@ -23,19 +23,31 @@ const AvatarModel = ({ scrollY, isScrolling, activeSection }) => {
   
   const [activeAnim, setActiveAnim] = useState('Idle');
 
+  // Initial greeting
+  useEffect(() => {
+    if (actions && actions['Wave']) {
+      actions['Wave'].reset().fadeIn(0.5).play();
+      setTimeout(() => {
+        actions['Wave'].fadeOut(0.5);
+        actions['Idle'].reset().fadeIn(0.5).play();
+        setActiveAnim('Idle');
+      }, 3000);
+    }
+  }, [actions]);
+
   // Animation logic
   useEffect(() => {
-    if (!actions) return;
+    if (!actions || activeAnim === 'Wave' && actions['Wave'].isRunning()) return;
     
     let nextAnim = 'Idle';
     if (isScrolling) {
       nextAnim = 'Walking';
-    } else if (activeSection === 'contact') {
-      nextAnim = 'Wave';
     } else if (activeSection === 'projects') {
       nextAnim = 'Dance';
     } else if (activeSection === 'skills') {
       nextAnim = 'Jump';
+    } else if (activeSection === 'contact') {
+      nextAnim = 'Wave';
     }
 
     if (activeAnim !== nextAnim && actions[nextAnim]) {
@@ -47,21 +59,25 @@ const AvatarModel = ({ scrollY, isScrolling, activeSection }) => {
 
   useFrame((state, delta) => {
     const mouse = state.mouse;
+    const time = state.clock.getElapsedTime();
     
-    // Head Tracking
+    // 1. Head Tracking
     const head = scene.getObjectByName('Head');
     if (head) {
       head.rotation.y = THREE.MathUtils.lerp(head.rotation.y, mouse.x * 0.4, 0.1);
       head.rotation.x = THREE.MathUtils.lerp(head.rotation.x, -mouse.y * 0.2, 0.1);
     }
 
-    // Dynamic Floating/Wobble
-    group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, mouse.x * 0.3, 0.05);
-    group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, Math.sin(state.clock.elapsedTime) * 0.15, 0.1);
+    // 2. Side-by-side Rotation (Oscillation)
+    group.current.rotation.y = Math.sin(time * 0.5) * 0.2 + mouse.x * 0.2;
+
+    // 3. Dynamic Vertical Movement (Jumping/Floating)
+    const floatHeight = isScrolling ? 0.3 : Math.sin(time * 2) * 0.1;
+    group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, floatHeight - 2.5, 0.1);
   });
 
   return (
-    <group ref={group} scale={0.65} position={[0, -2, 0]}>
+    <group ref={group} scale={0.7} position={[0, -2.5, 0]}>
       <primitive object={scene} />
     </group>
   );
@@ -73,21 +89,17 @@ const Avatar3D = () => {
   const [activeSection, setActiveSection] = useState('home');
   const scrollTimeout = useRef();
 
-  // Section Tracking
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
         });
       },
       { threshold: 0.5 }
     );
 
-    const sections = ['home', 'about', 'skills', 'projects', 'resume', 'contact'];
-    sections.forEach((id) => {
+    ['home', 'about', 'skills', 'projects', 'resume', 'contact'].forEach((id) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
@@ -107,36 +119,27 @@ const Avatar3D = () => {
   }, []);
 
   const sectionMessages = {
-    home: "Welcome to my digital space! 🤖",
-    about: "Let me tell you my story... 📖",
-    skills: "Check out my technical arsenal! ⚡",
-    projects: "I'm so proud of these builds! 🚀",
-    resume: "Want to see my full history? 📄",
-    contact: "Let's build something epic! ✉️"
+    home: "Hi! I'm Manish Suryawanshi 👋",
+    about: "Exploring my story... 📖",
+    skills: "Look at these skills! ⚡",
+    projects: "Time to dance for my work! 💃",
+    resume: "My professional journey 📄",
+    contact: "Wave hello to start a chat! ✉️"
   };
 
   return (
     <div className="fixed-avatar-container">
       <ErrorBoundary>
-        <Canvas shadows dpr={[1, 2]} gl={{ alpha: true, antialias: true, shadowMapType: THREE.PCFShadowMap }}>
+        <Canvas shadows dpr={[1, 1.5]} gl={{ alpha: true, antialias: true, shadowMapType: THREE.PCFShadowMap }}>
           <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={35} />
-          
-          {/* Enhanced Lighting */}
-          <ambientLight intensity={0.8} />
-          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} castShadow />
-          <pointLight position={[-10, -5, -10]} color="#7c3aed" intensity={1.5} />
-          <pointLight position={[0, 5, 5]} color="#06b6d4" intensity={1} />
+          <ambientLight intensity={1} />
+          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} />
+          <pointLight position={[-10, -5, -10]} color="#7c3aed" intensity={2} />
           
           <Suspense fallback={null}>
-            <Float speed={2} rotationIntensity={0.2} floatIntensity={0.3}>
-              <AvatarModel 
-                scrollY={scrollY} 
-                isScrolling={isScrolling} 
-                activeSection={activeSection} 
-              />
-            </Float>
+            <AvatarModel scrollY={scrollY} isScrolling={isScrolling} activeSection={activeSection} />
             <Environment preset="city" />
-            <ContactShadows opacity={0.5} scale={10} blur={2.5} far={4.5} />
+            <ContactShadows opacity={0.4} scale={10} blur={2.5} far={4} />
           </Suspense>
         </Canvas>
       </ErrorBoundary>

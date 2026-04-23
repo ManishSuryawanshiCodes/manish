@@ -194,11 +194,14 @@ ul {
 
 .avatar-interaction-bubble {
   position: absolute;
-  top: 40px;
-  right: 180px;
-  padding: 1rem 1.5rem;
+  top: -20px; /* Positioned clearly above the head */
+  right: 50%;
+  transform: translateX(50%);
+  padding: 0.8rem 1.2rem;
+  min-width: 200px;
   max-width: 280px;
-  border-radius: 20px 20px 0 20px;
+  text-align: center;
+  border-radius: 20px;
   z-index: 1001;
   animation: bubblePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: var(--shadow-lg), var(--shadow-glow);
@@ -206,7 +209,7 @@ ul {
 }
 
 .avatar-interaction-bubble p {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
@@ -215,44 +218,38 @@ ul {
 
 .bubble-tail {
   position: absolute;
-  bottom: 0;
-  right: -10px;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 20px;
   height: 20px;
   background: inherit;
   backdrop-filter: inherit;
-  clip-path: polygon(0 0, 0 100%, 100% 0);
-  border-right: 1px solid var(--glass-border);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 @keyframes bubblePop {
-  from { opacity: 0; transform: scale(0.5) translate(20px, 20px); }
-  to { opacity: 1; transform: scale(1) translate(0, 0); }
+  from { opacity: 0; transform: scale(0.5) translateX(100%); }
+  to { opacity: 1; transform: scale(1) translateX(50%); }
 }
 
 @media (max-width: 992px) {
   .avatar-interaction-bubble {
-    top: -20px;
-    right: 50%;
-    transform: translateX(50%);
-    border-radius: 20px;
+    top: -50px;
     width: 90%;
-    text-align: center;
-  }
-  
-  .bubble-tail {
-    display: none;
+    min-width: auto;
   }
 }
 
 @media (max-width: 576px) {
   .avatar-interaction-bubble {
-    top: -40px;
-    padding: 0.8rem 1.2rem;
+    top: -60px;
+    padding: 0.6rem 1rem;
   }
   
   .avatar-interaction-bubble p {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 }
 
