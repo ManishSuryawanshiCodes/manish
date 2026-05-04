@@ -23,10 +23,10 @@ const Contact = () => {
             <div className="success-lottie-placeholder">
               <CheckCircle2 size={80} className="success-check-icon" />
             </div>
-            <h2 className="success-title">Message Transmitted!</h2>
+            <h2 className="success-title">Thank You!</h2>
             <p className="success-desc">
-              Your inquiry has been successfully routed to Manish's terminal. 
-              Expect a response within 24 hours.
+              Thank you for connecting with Manish! 
+              Your message has been received, and he will get back to you shortly.
             </p>
             <div className="success-actions">
               <button className="btn btn-primary" onClick={() => window.location.reload()}>

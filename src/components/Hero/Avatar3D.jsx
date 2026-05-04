@@ -22,6 +22,13 @@ const AvatarModel = ({ scrollY, isScrolling, activeSection }) => {
   const { actions, names } = useAnimations(animations, group);
   
   const [activeAnim, setActiveAnim] = useState('Idle');
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Initial greeting as April
   useEffect(() => {
@@ -78,12 +85,13 @@ const AvatarModel = ({ scrollY, isScrolling, activeSection }) => {
     group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, floatHeight - 2.6, 0.1);
     
     // 4. Subtle "Breathing" Scale Effect
-    const breathingScale = 0.7 + Math.sin(time * 2) * 0.005;
+    const baseScale = isMobile ? 0.5 : 0.7;
+    const breathingScale = baseScale + Math.sin(time * 2) * 0.005;
     group.current.scale.set(breathingScale, breathingScale, breathingScale);
   });
 
   return (
-    <group ref={group} scale={0.7} position={[0, -2.5, 0]}>
+    <group ref={group} position={[0, -2.5, 0]}>
       <primitive object={scene} />
     </group>
   );
@@ -125,7 +133,7 @@ const Avatar3D = () => {
   }, []);
 
   const sectionMessages = {
-    home: "Hi! I'm April, Manish's AI Assistant 👋",
+    home: "Hi! I'm April 👋",
     about: "I've helped Manish build amazing things! 🤖",
     skills: "This arsenal is quite impressive! ⚡",
     projects: "Shall we dance for these builds? 💃",
@@ -160,10 +168,12 @@ const Avatar3D = () => {
         </Canvas>
       </ErrorBoundary>
       
-      <div className="avatar-interaction-bubble glass-card">
-        <p>{sectionMessages[activeSection] || "Scanning..."}</p>
-        <div className="bubble-tail"></div>
-      </div>
+      {scrollY < 50 && (
+        <div className="avatar-interaction-bubble glass-card">
+          <p>{sectionMessages[activeSection] || "Scanning..."}</p>
+          <div className="bubble-tail"></div>
+        </div>
+      )}
     </div>
   );
 };

@@ -122,11 +122,16 @@ ul {
   font-weight: 600;
   display: inline-flex;
   align-items: center;
+  justify-content: center; /* Center content */
   gap: 0.8rem;
   transition: all var(--transition-medium);
   cursor: pointer;
   border: none;
   font-family: inherit;
+}
+
+.btn-block {
+  width: 100%;
 }
 
 .btn-primary {
@@ -237,15 +242,18 @@ ul {
 @media (max-width: 992px) {
   .avatar-interaction-bubble {
     top: -50px;
-    width: 90%;
+    width: max-content;
+    max-width: 90vw;
     min-width: auto;
   }
 }
 
 @media (max-width: 576px) {
   .avatar-interaction-bubble {
-    top: -60px;
+    top: 80px; /* Adjusted for better alignment with avatar head */
     padding: 0.6rem 1rem;
+    width: max-content;
+    max-width: 90vw;
   }
   
   .avatar-interaction-bubble p {
@@ -254,6 +262,14 @@ ul {
 }
 
 @media (max-width: 768px) {
+  .fixed-avatar-container {
+    width: 250px;
+    height: 350px;
+    bottom: -20px;
+    right: 50%;
+    transform: translateX(50%);
+  }
+
   .message-bubble {
     top: 20px;
     right: 50%;

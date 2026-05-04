@@ -150,7 +150,7 @@
   .hero-container {
     grid-template-columns: 1fr;
     text-align: center;
-    gap: 4rem;
+    gap: 2rem;
   }
   
   .hero-btns {
@@ -162,10 +162,10 @@
   }
   
   .hero-visual {
-    order: -1;
+    display: none;
   }
   
   .hero-3d-container {
-    height: 400px;
+    display: none;
   }
 }

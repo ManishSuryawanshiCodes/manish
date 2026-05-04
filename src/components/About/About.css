@@ -181,3 +181,24 @@
     order: 1;
   }
 }
+
+@media (max-width: 768px) {
+  .about-highlights {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .about-image-wrapper {
+    width: 280px;
+    height: 380px;
+  }
+
+  .about-stat {
+    right: -10px;
+  }
+
+  .about-deco-circle {
+    width: 300px;
+    height: 300px;
+  }
+}

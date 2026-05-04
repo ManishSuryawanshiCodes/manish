@@ -115,6 +115,11 @@
 }
 
 @media (max-width: 768px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
   .skill-category {
     padding: 1.5rem;
   }

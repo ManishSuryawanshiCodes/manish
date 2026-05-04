@@ -182,12 +182,25 @@
 
 @media (max-width: 576px) {
   .contact-form {
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.5rem 100px;
   }
   
   .form-row {
     grid-template-columns: 1fr;
     gap: 0;
+  }
+  
+  .info-details p {
+    font-size: 0.9rem; /* Smaller font for email/phone */
+    word-break: break-all; /* Ensure long emails wrap */
+  }
+
+  .info-item {
+    gap: 1rem;
+  }
+
+  .contact-subtitle {
+    font-size: 1.5rem;
   }
   
   .contact-success-wrapper {
