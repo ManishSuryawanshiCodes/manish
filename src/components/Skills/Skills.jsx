@@ -48,11 +48,11 @@ const Skills = () => {
           </h2>
           <div className="h-1.5 w-24 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full mb-6"></div>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            A meticulously curated stack of technologies optimized for performance, scalability, and intelligence.
+            A meticulously organized collection of technologies structured for predictable performance and scalability.
           </p>
         </motion.div>
 
-        {/* The "Main Card" Container */}
+        {/* The Organized Grid Container */}
         <motion.div 
           variants={containerVariants}
           initial="hidden"
@@ -67,12 +67,12 @@ const Skills = () => {
               whileHover={{ y: -8 }}
               className={`group relative h-full ${idx === 6 ? 'md:col-span-2 lg:col-span-1' : ''}`}
             >
-              <div className="absolute -inset-0.5 bg-gradient-to-b from-white/10 to-transparent rounded-3xl blur-[2px] opacity-50 group-hover:opacity-100 transition duration-500"></div>
+              <div className="absolute -inset-0.5 bg-gradient-to-b from-white/10 to-transparent rounded-3xl blur-[2px] opacity-30 group-hover:opacity-100 transition duration-500"></div>
               
-              <div className="relative h-full bg-[#0a0a1a]/60 backdrop-blur-2xl border border-white/10 p-8 rounded-3xl flex flex-col justify-between hover:bg-white/[0.03] transition-all duration-500 shadow-2xl">
+              <div className="relative h-full bg-slate-900/40 backdrop-blur-xl border border-white/10 p-8 rounded-3xl flex flex-col justify-between hover:bg-white/[0.04] transition-all duration-500 shadow-2xl">
                 <div>
                   <div className="flex items-center justify-between mb-8">
-                    <div className="p-3.5 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl text-cyan-400 shadow-inner">
+                    <div className="p-3.5 bg-white/5 rounded-2xl text-cyan-400 shadow-sm border border-white/5">
                       {idx === 0 ? <Brain size={26} strokeWidth={1.5} /> : 
                        idx === 1 ? <Cpu size={26} strokeWidth={1.5} /> : 
                        idx === 2 ? <Layers size={26} strokeWidth={1.5} /> :
@@ -82,63 +82,69 @@ const Skills = () => {
                        <Rocket size={26} strokeWidth={1.5} />}
                     </div>
                     <span className="text-[10px] font-bold text-slate-500 tracking-[3px] uppercase">
-                      Category 0{idx + 1}
+                      SYS-0{idx + 1}
                     </span>
                   </div>
 
-                  <h3 className="text-xl font-bold text-white mb-6 tracking-tight group-hover:text-cyan-200 transition-colors">
+                  <h3 className="text-xl font-bold text-cyan-400/90 mb-8 tracking-tight group-hover:text-cyan-300 transition-colors">
                     {category.category}
                   </h3>
 
-                  <div className="flex flex-wrap gap-2.5">
+                  {/* STRICT INTERNAL GRID SYSTEM */}
+                  <div className={`grid gap-3 ${
+                    category.category.includes('Languages') ? 'grid-cols-3 md:grid-cols-3' : 
+                    category.category.includes('Frontend') ? 'grid-cols-3 lg:grid-cols-4' : 
+                    category.category.includes('Backend') ? 'grid-cols-1' : 
+                    'grid-cols-2'
+                  }`}>
                     {category.skills.map((skill, sIdx) => (
-                      <span 
+                      <motion.div 
                         key={sIdx}
-                        className="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-full text-[13px] font-medium text-slate-400 hover:text-white hover:bg-white/10 hover:border-cyan-500/40 transition-all cursor-default"
+                        whileHover={{ scale: 1.02, backgroundColor: 'rgba(255,255,255,0.08)' }}
+                        className="px-2 py-2.5 bg-white/5 border border-white/10 rounded-full text-[11px] font-semibold text-slate-300 text-center truncate hover:text-white hover:border-cyan-500/40 transition-all duration-300 cursor-default"
+                        title={skill}
                       >
                         {skill}
-                      </span>
+                      </motion.div>
                     ))}
                   </div>
                 </div>
                 
-                {/* Visual Accent for card bottom */}
-                <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between text-xs text-slate-500">
+                {/* Visual Accent */}
+                <div className="mt-10 pt-6 border-t border-white/5 flex items-center justify-between text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                   <span className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/50"></div>
-                    Expertise
+                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_8px_rgba(6,182,212,0.8)]"></div>
+                    Verified Stack
                   </span>
-                  <div className="w-12 h-1 bg-white/5 rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-cyan-500 to-purple-500 w-[70%]"></div>
-                  </div>
+                  <span>v4.0</span>
                 </div>
               </div>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Exploring Section */}
+        {/* Frontier Tech Section */}
         <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-12 p-1 bg-[#0a0a1a]/40 backdrop-blur-xl rounded-[2.5rem] border border-white/10 overflow-hidden group shadow-2xl"
+          className="mt-16 p-1 bg-white/5 backdrop-blur-lg rounded-[2.5rem] border border-white/10 overflow-hidden group shadow-2xl"
         >
-          <div className="bg-gradient-to-r from-transparent via-white/5 to-transparent p-8 md:p-12 rounded-[2.4rem] relative overflow-hidden">
-             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-               <div className="text-center md:text-left">
-                 <h3 className="text-3xl font-black mb-2 text-white flex items-center justify-center md:justify-start gap-3">
+          <div className="p-8 md:p-12 relative overflow-hidden">
+             <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
+               <div className="text-center lg:text-left">
+                 <h3 className="text-3xl font-black mb-2 text-white flex items-center justify-center lg:justify-start gap-3">
                    <Sparkles className="text-yellow-400 animate-pulse" /> Frontier Tech
                  </h3>
-                 <p className="text-slate-400">Expanding horizons into cutting-edge domains</p>
+                 <p className="text-slate-400">Pioneering in emerging digital landscapes</p>
                </div>
                
-               <div className="flex flex-wrap justify-center md:justify-end gap-3">
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full lg:w-auto">
                  {learningGoals.map((goal, gIdx) => (
-                   <div key={gIdx} className="px-5 py-3 bg-white/5 backdrop-blur-md rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all flex items-center gap-3 group/goal">
-                     <div className="w-2 h-2 rounded-full bg-cyan-500 group-hover/goal:scale-125 transition-transform shadow-[0_0_10px_rgba(6,182,212,0.8)]"></div>
-                     <span className="text-sm font-semibold text-slate-300">{goal}</span>
+                   <div key={gIdx} className="px-6 py-4 bg-white/5 backdrop-blur-md rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all flex items-center gap-4 group/goal">
+                     <div className="w-2.5 h-2.5 rounded-full bg-cyan-500 group-hover/goal:scale-125 transition-transform shadow-[0_0_12px_rgba(6,182,212,1)]"></div>
+                     <span className="text-sm font-bold text-slate-300 group-hover/goal:text-white transition-colors">{goal}</span>
                    </div>
                  ))}
                </div>
