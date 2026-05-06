@@ -20,20 +20,21 @@ const Contact = () => {
       <section id="contact" className="contact reveal">
         <div className="container">
           <div className="contact-success-wrapper glass-card">
-            <div className="success-lottie-placeholder">
-              <CheckCircle2 size={80} className="success-check-icon" />
+            <div className="success-icon-box">
+              <CheckCircle2 size={100} className="success-check-icon" />
+              <div className="success-glow"></div>
             </div>
-            <h2 className="success-title">Thank You!</h2>
+            <h2 className="success-title gradient-text">Transmission Successful!</h2>
             <p className="success-desc">
-              Thank you for connecting with Manish! 
-              Your message has been received, and he will get back to you shortly.
+              Your message has been beamed to Manish's headquarters. 
+              Expect a response through the subspace relays shortly.
             </p>
             <div className="success-actions">
               <button className="btn btn-primary" onClick={() => window.location.reload()}>
-                Send Another Message
+                Beam Another Message
               </button>
               <a href="#projects" className="btn btn-secondary">
-                View My Projects <ArrowRight size={18} />
+                Explore Projects <ArrowRight size={18} />
               </a>
             </div>
           </div>
@@ -125,8 +126,16 @@ const Contact = () => {
                 <ValidationError prefix="Message" field="message" errors={state.errors} className="error-msg" />
               </div>
               
-              <button type="submit" className="btn btn-primary btn-block" disabled={state.submitting}>
-                {state.submitting ? 'Transmitting...' : 'Transmit Message'} <Send size={18} />
+              <button type="submit" className="btn btn-primary btn-block transmit-btn" disabled={state.submitting}>
+                {state.submitting ? (
+                  <span className="loading-state">
+                    <div className="spinner"></div> Transmitting...
+                  </span>
+                ) : (
+                  <>
+                    Transmit Message <Send size={18} className="send-icon" />
+                  </>
+                )}
               </button>
             </form>
           </div>

@@ -1,5 +1,8 @@
 import React from 'react';
-import { Briefcase, GraduationCap, Calendar, Award, Rocket, Users, Target } from 'lucide-react';
+import { Briefcase, GraduationCap, Calendar, Award, Rocket, Users, Target, Download, FileText } from 'lucide-react';
+import { personalInfo } from '../../data/personal';
+import resumeFile from '../../assets/Manish_Suryawanshi_Resume.pdf';
+import cvFile from '../../assets/manish 2026 CV.pdf';
 import './Resume.css';
 
 const journeyData = [
@@ -83,8 +86,11 @@ const Resume = () => {
         </div>
 
         <div className="resume-cta">
-          <a href="/resume.pdf" download className="btn btn-secondary">
-            View Full CV
+          <a href={resumeFile} download="Manish_Suryawanshi_Resume.pdf" className="btn btn-primary">
+            <Download size={18} /> Download Resume
+          </a>
+          <a href={cvFile} download="Manish_Suryawanshi_CV.pdf" className="btn btn-secondary">
+            <FileText size={18} /> View Full CV
           </a>
         </div>
       </div>

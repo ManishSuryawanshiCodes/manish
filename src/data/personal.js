@@ -16,5 +16,7 @@ export const personalInfo = {
     email: "manishsuryawanshi0918@gmail.com",
     phone: "+91-6362710856",
     location: "Pune, Maharashtra, India"
-  }
+  },
+  resumePath: "/src/assets/Manish_Suryawanshi_Resume.pdf",
+  cvPath: "/src/assets/manish 2026 CV.pdf"
 };

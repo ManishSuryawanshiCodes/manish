@@ -2,6 +2,7 @@ import React from 'react';
 import { Download, ExternalLink, Sparkles } from 'lucide-react';
 import { personalInfo } from '../../data/personal';
 import { useTypewriter } from '../../hooks/useTypewriter';
+import resumeFile from '../../assets/Manish_Suryawanshi_Resume.pdf';
 import Avatar3D from './Avatar3D';
 import './Hero.css';
 
@@ -30,7 +31,7 @@ const Hero = () => {
             <a href="#projects" className="btn btn-primary">
               The Project Orbit <ExternalLink size={20} />
             </a>
-            <a href="/resume.pdf" className="btn btn-secondary" download>
+            <a href={resumeFile} className="btn btn-secondary" download="Manish_Suryawanshi_Resume.pdf">
               Get Resume <Download size={20} />
             </a>
           </div>
