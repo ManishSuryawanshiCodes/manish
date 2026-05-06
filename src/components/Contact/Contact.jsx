@@ -107,6 +107,7 @@ const Contact = () => {
                 <div className="form-group">
                   <label htmlFor="name">Full Name</label>
                   <input type="text" name="name" id="name" placeholder="John Doe" required />
+                  <ValidationError prefix="Name" field="name" errors={state.errors} className="error-msg" />
                 </div>
                 <div className="form-group">
                   <label htmlFor="email">Email Address</label>
@@ -118,6 +119,7 @@ const Contact = () => {
               <div className="form-group">
                 <label htmlFor="subject">Subject</label>
                 <input type="text" name="subject" id="subject" placeholder="Project Inquiry" required />
+                <ValidationError prefix="Subject" field="subject" errors={state.errors} className="error-msg" />
               </div>
               
               <div className="form-group">
