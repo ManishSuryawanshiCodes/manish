@@ -64,22 +64,23 @@ const Navbar = ({ theme, toggleTheme }) => {
           </button>
         </div>
 
-        {/* Mobile Menu Overlay */}
-        <div className={`mobile-menu ${isOpen ? 'open glass-card' : ''}`}>
-          <ul className="mobile-nav-links">
-            {navLinks.map((link) => (
-              <li key={link.name}>
-                <a 
-                  href={link.href} 
-                  onClick={() => setIsOpen(false)}
-                  className={activeSection === link.id ? 'active' : ''}
-                >
-                  {link.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+      </div>
+
+      {/* Mobile Menu Overlay - Moved outside container to avoid flex constraints */}
+      <div className={`mobile-menu ${isOpen ? 'open glass-card' : ''}`}>
+        <ul className="mobile-nav-links">
+          {navLinks.map((link) => (
+            <li key={link.name}>
+              <a 
+                href={link.href} 
+                onClick={() => setIsOpen(false)}
+                className={activeSection === link.id ? 'active' : ''}
+              >
+                {link.name}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </nav>
   );
