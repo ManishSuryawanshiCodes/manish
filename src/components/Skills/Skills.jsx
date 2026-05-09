@@ -90,13 +90,6 @@ const SkillCard = ({ category, skills, index }) => {
             ))}
           </div>
 
-          <div className="mt-10 pt-8 border-t border-white/5 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse shadow-[0_0_12px_rgba(34,211,238,1)]"></div>
-              <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">Active Matrix</span>
-            </div>
-            <span className="text-[10px] font-black text-[var(--text-secondary)] uppercase tracking-widest">v5.0</span>
-          </div>
         </div>
       </div>
     </motion.div>
