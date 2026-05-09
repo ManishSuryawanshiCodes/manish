@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { useForm, ValidationError } from '@formspree/react';
 import { Mail, Phone, MapPin, Send, CheckCircle2, ArrowRight } from 'lucide-react';
 import { personalInfo } from '../../data/personal';
@@ -17,7 +18,12 @@ const Contact = () => {
 
   if (state.succeeded) {
     return (
-      <section id="contact" className="contact reveal">
+      <motion.section 
+        id="contact" 
+        className="contact"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
         <div className="container">
           <div className="contact-success-wrapper glass-card">
             <div className="success-icon-box">
@@ -39,12 +45,19 @@ const Contact = () => {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
     );
   }
 
   return (
-    <section id="contact" className="contact reveal">
+    <motion.section 
+      id="contact" 
+      className="contact"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.8 }}
+    >
       <div className="container">
         <div className="section-header">
           <h2 className="section-title">Get In Touch</h2>
@@ -92,10 +105,10 @@ const Contact = () => {
             </div>
 
             <div className="contact-socials">
-              <a href={personalInfo.socials.github} target="_blank" rel="noopener noreferrer" className="social-link glass-card">
+              <a href={personalInfo.socials.github} target="_blank" rel="noopener noreferrer" className="social-link glass-card" aria-label="GitHub Profile">
                 <GithubIcon />
               </a>
-              <a href={personalInfo.socials.linkedin} target="_blank" rel="noopener noreferrer" className="social-link glass-card">
+              <a href={personalInfo.socials.linkedin} target="_blank" rel="noopener noreferrer" className="social-link glass-card" aria-label="LinkedIn Profile">
                 <LinkedinIcon />
               </a>
             </div>
@@ -143,7 +156,7 @@ const Contact = () => {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

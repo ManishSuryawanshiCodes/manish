@@ -21,8 +21,8 @@ const Navbar = ({ theme, toggleTheme }) => {
     { name: 'Home', href: '#home', id: 'home' },
     { name: 'About', href: '#about', id: 'about' },
     { name: 'Skills', href: '#skills', id: 'skills' },
-    { name: 'Projects', href: '#projects', id: 'projects' },
     { name: 'Resume', href: '#resume', id: 'resume' },
+    { name: 'Projects', href: '#projects', id: 'projects' },
     { name: 'Contact', href: '#contact', id: 'contact' },
   ];
 
@@ -51,10 +51,15 @@ const Navbar = ({ theme, toggleTheme }) => {
           <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
         </div>
 
-        {/* Mobile Toggle */}
         <div className="mobile-controls">
           <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
-          <button className="menu-btn glass-card" onClick={() => setIsOpen(!isOpen)} style={{ padding: '8px', display: 'flex' }}>
+          <button 
+            className="menu-btn glass-card" 
+            onClick={() => setIsOpen(!isOpen)} 
+            style={{ padding: '8px', display: 'flex' }}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isOpen}
+          >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>

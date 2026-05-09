@@ -1,11 +1,19 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { User, Code, Rocket, Award, Brain, Zap } from 'lucide-react';
 import { personalInfo } from '../../data/personal';
 import './About.css';
 
 const About = () => {
   return (
-    <section id="about" className="about reveal">
+    <motion.section 
+      id="about" 
+      className="about"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.8 }}
+    >
       <div className="container">
         <div className="section-header">
           <h2 className="section-title">The Architect Behind the Code</h2>
@@ -67,7 +75,7 @@ const About = () => {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

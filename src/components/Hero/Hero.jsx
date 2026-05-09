@@ -28,24 +28,18 @@ const Hero = () => {
           <p className="hero-tagline">{personalInfo.tagline}</p>
           
           <div className="hero-btns">
-            <a href="#projects" className="btn btn-primary">
+            <a href="#projects" className="btn btn-primary" aria-label="View my projects orbit">
               The Project Orbit <ExternalLink size={20} />
             </a>
-            <a href={resumeFile} className="btn btn-secondary" download="Manish_Suryawanshi_Resume.pdf">
+            <a href={resumeFile} className="btn btn-secondary" download="Manish_Suryawanshi_Resume.pdf" aria-label="Download my resume">
               Get Resume <Download size={20} />
             </a>
           </div>
 
           <div className="hero-social-quick">
-            <a href={personalInfo.socials.github} target="_blank" rel="noopener noreferrer" className="quick-link">Github</a>
+            <a href={personalInfo.socials.github} target="_blank" rel="noopener noreferrer" className="quick-link" aria-label="Visit my GitHub profile">Github</a>
             <span className="sep">•</span>
-            <a href={personalInfo.socials.linkedin} target="_blank" rel="noopener noreferrer" className="quick-link">LinkedIn</a>
-          </div>
-        </div>
-        
-        <div className="hero-visual">
-          <div className="hero-visual-fallback">
-            {/* Visual space is now managed by the global 3D Avatar */}
+            <a href={personalInfo.socials.linkedin} target="_blank" rel="noopener noreferrer" className="quick-link" aria-label="Visit my LinkedIn profile">LinkedIn</a>
           </div>
         </div>
       </div>

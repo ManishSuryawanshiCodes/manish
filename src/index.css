@@ -1,8 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap');
 
 :root {
   /* Dark Theme (Default) - Deep Space & Liquid Glass */
@@ -101,10 +100,28 @@ ul {
   }
 }
 
+/* Accessibility: prefers-reduced-motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+  
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 .glass-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid var(--glass-border);
   border-radius: 20px;
   box-shadow: var(--shadow-md);
@@ -287,12 +304,13 @@ ul {
 
 @media (max-width: 768px) {
   .fixed-avatar-container {
-    width: 150px;
-    height: 200px;
+    width: 220px;
+    height: 280px;
     bottom: 10px;
     right: 0px;
     transform: none;
     z-index: 999;
+    filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.2));
   }
 
   .avatar-interaction-bubble {

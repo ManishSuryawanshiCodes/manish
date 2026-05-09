@@ -7,10 +7,12 @@
 }
 
 .hero-container {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 2rem;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  text-align: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .hero-badge {
@@ -49,7 +51,9 @@
 .hero-tagline {
   font-size: 1.2rem;
   color: var(--text-secondary);
-  max-width: 600px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 3rem;
 }
 
@@ -148,8 +152,6 @@
 
 @media (max-width: 992px) {
   .hero-container {
-    grid-template-columns: 1fr;
-    text-align: center;
     gap: 2rem;
   }
   
@@ -159,13 +161,5 @@
   
   .hero-social-quick {
     justify-content: center;
-  }
-  
-  .hero-visual {
-    display: none;
-  }
-  
-  .hero-3d-container {
-    display: none;
   }
 }

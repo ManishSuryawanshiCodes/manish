@@ -19,7 +19,7 @@ class ErrorBoundary extends React.Component {
 const AvatarModel = ({ scrollY, isScrolling, activeSection }) => {
   const group = useRef();
   const { scene, animations } = useGLTF('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/RobotExpressive/RobotExpressive.glb');
-  const { actions, names } = useAnimations(animations, group);
+  const { actions } = useAnimations(animations, group);
   
   const [activeAnim, setActiveAnim] = useState('Idle');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -153,6 +153,8 @@ const Avatar3D = () => {
             powerPreference: "high-performance",
             preserveDrawingBuffer: true 
           }}
+          aria-label="3D Interactive Robot Avatar named April"
+          role="img"
         >
           <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={35} />
           <ambientLight intensity={1} />

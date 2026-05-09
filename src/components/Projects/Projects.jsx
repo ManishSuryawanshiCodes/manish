@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { ExternalLink, Layers, Play, Code2, Sparkles } from 'lucide-react';
 import { projectsData } from '../../data/projects';
 import './Projects.css';
@@ -17,7 +18,14 @@ const Projects = () => {
     : projectsData.filter(p => p.category === filter);
 
   return (
-    <section id="projects" className="projects reveal">
+    <motion.section 
+      id="projects" 
+      className="projects"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.8 }}
+    >
       <div className="container">
         <div className="section-header">
           <h2 className="section-title">The Project Orbit</h2>
@@ -45,10 +53,10 @@ const Projects = () => {
                   <Code2 size={24} />
                 </div>
                 <div className="project-links">
-                  <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="link-icon">
+                  <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="link-icon" aria-label={`View ${project.title} source code on GitHub`}>
                     <GithubIcon />
                   </a>
-                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="link-icon">
+                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="link-icon" aria-label={`View ${project.title} live demo`}>
                     <ExternalLink size={20} />
                   </a>
                 </div>
@@ -88,7 +96,7 @@ const Projects = () => {
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

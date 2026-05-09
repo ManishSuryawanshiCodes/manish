@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Navbar from './components/Navbar/Navbar';
 import Hero from './components/Hero/Hero';
 import About from './components/About/About';
@@ -8,15 +8,14 @@ import Resume from './components/Resume/Resume';
 import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
 import ParticleBackground from './components/ParticleBackground/ParticleBackground';
-import { useScrollReveal } from './hooks/useScrollReveal';
 import { useTheme } from './hooks/useTheme';
+import { useScrollReveal } from './hooks/useScrollReveal';
 import './App.css';
-
 import Avatar3D from './components/Hero/Avatar3D';
 
 function App() {
   const { theme, toggleTheme } = useTheme();
-  useScrollReveal('.reveal');
+  useScrollReveal();
 
   return (
     <div className="app">
@@ -30,8 +29,8 @@ function App() {
         <Hero />
         <About />
         <Skills />
-        <Projects />
         <Resume />
+        <Projects />
         <Contact />
       </main>
       
