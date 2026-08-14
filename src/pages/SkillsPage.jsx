@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Cpu, 
@@ -10,35 +9,24 @@ import {
   Cloud, 
   Rocket, 
   Sparkles, 
-  Zap, 
-  Code2, 
-  CheckCircle2,
   Workflow
 } from 'lucide-react';
 import { skillsData, learningGoals } from '../data/skills';
 import './SkillsPage.css';
 
 const SkillsPage = () => {
-  const [activeTab, setActiveTab] = useState('All');
-
   const getIcon = (idx) => {
     const icons = [
-      <Terminal size={24} />,
-      <Layers size={24} />,
-      <Globe size={24} />,
-      <Database size={24} />,
-      <Brain size={24} />,
-      <Cloud size={24} />,
-      <Workflow size={24} />
+      <Terminal size={24} key="term" />,
+      <Layers size={24} key="lay" />,
+      <Globe size={24} key="glob" />,
+      <Database size={24} key="db" />,
+      <Brain size={24} key="br" />,
+      <Cloud size={24} key="cld" />,
+      <Workflow size={24} key="wf" />
     ];
     return icons[idx % icons.length];
   };
-
-  const filteredCategories = activeTab === 'All'
-    ? skillsData
-    : skillsData.filter(cat => cat.category.toLowerCase().includes(activeTab.toLowerCase()));
-
-  const tabOptions = ['All', 'Programming', 'Frontend', 'Backend', 'Databases', 'AI', 'Cloud'];
 
   return (
     <motion.div 

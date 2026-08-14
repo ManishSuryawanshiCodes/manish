@@ -1,6 +1,5 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { User, Code, Rocket, Award, Brain, Zap } from 'lucide-react';
+import { Code, Rocket, Brain, Zap } from 'lucide-react';
 import { personalInfo } from '../../data/personal';
 import './About.css';
 

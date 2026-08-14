@@ -1,14 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Code2, 
   ExternalLink, 
   Sparkles, 
   Search, 
-  Layers, 
   Play, 
-  CheckCircle2, 
-  Filter,
   Info
 } from 'lucide-react';
 import { projectsData } from '../data/projects';

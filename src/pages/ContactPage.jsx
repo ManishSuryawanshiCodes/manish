@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm, ValidationError } from '@formspree/react';
 import { 
@@ -7,13 +7,10 @@ import {
   MapPin, 
   Send, 
   CheckCircle2, 
-  ArrowRight, 
   Copy, 
   Check, 
   Sparkles, 
-  MessageSquare,
-  Clock,
-  Zap
+  Clock
 } from 'lucide-react';
 import { personalInfo } from '../data/personal';
 import './ContactPage.css';

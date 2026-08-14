@@ -1,6 +1,5 @@
-import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ExternalLink, Sparkles, CheckCircle2, Cpu, ShieldCheck, Layers } from 'lucide-react';
+import { X, ExternalLink, Sparkles, CheckCircle2, Cpu, ShieldCheck } from 'lucide-react';
 import './ProjectModal.css';
 
 const GithubIcon = () => (

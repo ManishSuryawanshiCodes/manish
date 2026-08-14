@@ -1,38 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
-export const useTypewriter = (words, typingSpeed = 150, deletingSpeed = 100, pauseTime = 2000) => {
+export const useTypewriter = (words = [], typingSpeed = 120, deletingSpeed = 80, pauseTime = 2000) => {
   const [index, setIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
   const [reverse, setReverse] = useState(false);
-  const [blink, setBlink] = useState(true);
 
-  // Blinking cursor
+  const safeWords = useMemo(() => {
+    return Array.isArray(words) && words.length > 0
+      ? words
+      : ["Full-Stack Developer", "AI SaaS Builder"];
+  }, [words]);
+
+  // Typing timer logic
   useEffect(() => {
-    const timeout2 = setTimeout(() => {
-      setBlink((prev) => !prev);
-    }, 500);
-    return () => clearTimeout(timeout2);
-  }, [blink]);
+    const currentWord = safeWords[index % safeWords.length] || "";
 
-  // Typing logic
-  useEffect(() => {
-    if (subIndex === words[index].length + 1 && !reverse) {
-      setReverse(true);
-      return;
-    }
+    const timer = setTimeout(() => {
+      if (!reverse) {
+        if (subIndex < currentWord.length) {
+          setSubIndex(prev => prev + 1);
+        } else {
+          setReverse(true);
+        }
+      } else {
+        if (subIndex > 0) {
+          setSubIndex(prev => prev - 1);
+        } else {
+          setReverse(false);
+          setIndex(prev => (prev + 1) % safeWords.length);
+        }
+      }
+    }, reverse ? deletingSpeed : (subIndex === currentWord.length ? pauseTime : typingSpeed));
 
-    if (subIndex === 0 && reverse) {
-      setReverse(false);
-      setIndex((prev) => (prev + 1) % words.length);
-      return;
-    }
+    return () => clearTimeout(timer);
+  }, [subIndex, index, reverse, safeWords, typingSpeed, deletingSpeed, pauseTime]);
 
-    const timeout = setTimeout(() => {
-      setSubIndex((prev) => prev + (reverse ? -1 : 1));
-    }, reverse ? deletingSpeed : (subIndex === words[index].length ? pauseTime : typingSpeed));
-
-    return () => clearTimeout(timeout);
-  }, [subIndex, index, reverse, words, typingSpeed, deletingSpeed, pauseTime]);
-
-  return `${words[index].substring(0, subIndex)}${blink ? "|" : " "}`;
+  const currentWord = safeWords[index % safeWords.length] || "";
+  return currentWord.substring(0, Math.max(0, Math.min(subIndex, currentWord.length)));
 };

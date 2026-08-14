@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Layers, Play, Code2, Sparkles } from 'lucide-react';
+import { ExternalLink, Play, Code2, Sparkles } from 'lucide-react';
 import { projectsData } from '../../data/projects';
 import './Projects.css';
 

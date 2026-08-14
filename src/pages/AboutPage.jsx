@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { NavLink } from 'react-router-dom';
 import { 
@@ -8,15 +7,11 @@ import {
   Rocket, 
   Sparkles, 
   Layers, 
-  Cpu, 
   Download, 
   FileText, 
   CheckCircle2, 
   MapPin, 
-  Mail, 
-  GraduationCap,
   ArrowRight,
-  ShieldAlert,
   Zap
 } from 'lucide-react';
 import { personalInfo } from '../data/personal';

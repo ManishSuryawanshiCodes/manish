@@ -1,7 +1,5 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { Briefcase, GraduationCap, Calendar, Award, Rocket, Users, Target, Download, FileText } from 'lucide-react';
-import { personalInfo } from '../../data/personal';
+import { GraduationCap, Calendar, Award, Rocket, Users, Target, Download, FileText } from 'lucide-react';
 import resumeFile from '../../assets/Manish_Suryawanshi_Resume.pdf';
 import cvFile from '../../assets/manish 2026 CV.pdf';
 import './Resume.css';

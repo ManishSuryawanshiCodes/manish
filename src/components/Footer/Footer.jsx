@@ -1,6 +1,5 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Mail, ArrowUpCircle, Zap, Heart } from 'lucide-react';
+import { Mail, ArrowUpCircle, Zap } from 'lucide-react';
 import { personalInfo } from '../../data/personal';
 import './Footer.css';
 

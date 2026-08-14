@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { skillsData, learningGoals } from '../../data/skills';
-import { Sparkles, Brain, Cpu, Rocket, Database, Layers, Cloud, Code2, Terminal, Globe, Zap } from 'lucide-react';
+import { Sparkles, Brain, Rocket, Database, Layers, Cloud, Code2, Terminal, Globe, Zap } from 'lucide-react';
 import './Skills.css';
 
 const SkillCard = ({ category, skills, index }) => {

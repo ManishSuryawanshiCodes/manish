@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Zap, Search, Sparkles, Command } from 'lucide-react';
+import { Menu, X, Zap, Search, Sparkles } from 'lucide-react';
 import ThemeToggle from '../ThemeToggle/ThemeToggle';
 import './Navbar.css';
 
@@ -17,11 +17,6 @@ const Navbar = ({ theme, toggleTheme, onOpenCmdK }) => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // Close mobile menu on route change
-  useEffect(() => {
-    setIsOpen(false);
-  }, [location.pathname]);
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -118,6 +113,7 @@ const Navbar = ({ theme, toggleTheme, onOpenCmdK }) => {
                   <li key={link.name}>
                     <NavLink 
                       to={link.path}
+                      onClick={() => setIsOpen(false)}
                       className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}
                     >
                       <span>{link.name}</span>

@@ -1,18 +1,10 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { NavLink } from 'react-router-dom';
 import { 
   Sparkles, 
   ArrowRight, 
   Download, 
-  Terminal, 
-  Code2, 
-  Cpu, 
-  Zap, 
-  Layers, 
   ExternalLink,
-  ShieldCheck,
-  CheckCircle2,
   FolderGit2
 } from 'lucide-react';
 import { personalInfo } from '../data/personal';

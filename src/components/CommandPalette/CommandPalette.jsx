@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -12,7 +12,6 @@ import {
   Moon, 
   Sun, 
   FileText, 
-  ExternalLink,
   ArrowRight,
   Sparkles
 } from 'lucide-react';
@@ -28,9 +27,12 @@ const CommandPalette = ({ isOpen, onClose, theme, toggleTheme }) => {
 
   useEffect(() => {
     if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 50);
-      setQuery('');
-      setSelectedIndex(0);
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+        setQuery('');
+        setSelectedIndex(0);
+      }, 10);
+      return () => clearTimeout(timer);
     }
   }, [isOpen]);
 

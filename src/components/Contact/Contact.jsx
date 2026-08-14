@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { motion } from 'framer-motion';
 import { useForm, ValidationError } from '@formspree/react';
 import { Mail, Phone, MapPin, Send, CheckCircle2, ArrowRight } from 'lucide-react';

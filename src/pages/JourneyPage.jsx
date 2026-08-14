@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   GraduationCap, 
@@ -9,11 +9,8 @@ import {
   Calendar, 
   Download, 
   FileText, 
-  Sparkles, 
-  ExternalLink,
-  CheckCircle2,
-  Building,
-  ArrowRight
+  CheckCircle2, 
+  Building
 } from 'lucide-react';
 import resumeFile from '../assets/Manish_Suryawanshi_Resume.pdf';
 import cvFile from '../assets/manish 2026 CV.pdf';
