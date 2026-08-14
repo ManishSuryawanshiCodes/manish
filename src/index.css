@@ -509,19 +509,27 @@ ul {
 
 @media (max-width: 768px) {
   .compact-avatar-dock {
-    bottom: 8px;
-    right: 8px;
+    bottom: 6px;
+    right: 6px;
+    z-index: 80;
   }
 
   .compact-canvas-box {
-    width: 115px;
-    height: 145px;
+    width: 95px;
+    height: 120px;
   }
 
   .compact-avatar-bubble {
-    font-size: 0.7rem;
-    padding: 0.25rem 0.65rem;
-    margin-bottom: -10px;
+    font-size: 0.68rem;
+    padding: 0.2rem 0.55rem;
+    margin-bottom: -6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .compact-canvas-box {
+    width: 82px;
+    height: 105px;
   }
 }
 
