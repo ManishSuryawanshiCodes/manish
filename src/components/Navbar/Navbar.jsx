@@ -1,88 +1,136 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Zap } from 'lucide-react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X, Zap, Search, Sparkles, Command } from 'lucide-react';
 import ThemeToggle from '../ThemeToggle/ThemeToggle';
-import { useActiveSection } from '../../hooks/useActiveSection';
 import './Navbar.css';
 
-const Navbar = ({ theme, toggleTheme }) => {
+const Navbar = ({ theme, toggleTheme, onOpenCmdK }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const activeSection = useActiveSection(['home', 'about', 'skills', 'projects', 'resume', 'contact']);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
+
   const navLinks = [
-    { name: 'Home', href: '#home', id: 'home' },
-    { name: 'About', href: '#about', id: 'about' },
-    { name: 'Skills', href: '#skills', id: 'skills' },
-    { name: 'Resume', href: '#resume', id: 'resume' },
-    { name: 'Projects', href: '#projects', id: 'projects' },
-    { name: 'Contact', href: '#contact', id: 'contact' },
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Projects', path: '/projects' },
+    { name: 'Skills', path: '/skills' },
+    { name: 'Journey', path: '/journey' },
+    { name: 'Contact', path: '/contact' },
   ];
 
   return (
-    <nav className={`navbar ${scrolled ? 'scrolled glass-card' : ''}`}>
-      <div className="container nav-container">
-        <a href="#home" className="logo">
-          <Zap size={24} className="logo-icon" fill="currentColor" />
-          <span className="gradient-text">M</span>anish
-        </a>
+    <header className={`navbar-wrapper ${scrolled ? 'scrolled' : ''}`}>
+      <nav className="navbar-container glass-card">
+        <NavLink to="/" className="navbar-logo" aria-label="MANish Home">
+          <div className="logo-spark-box">
+            <Zap size={18} className="logo-spark-icon" />
+          </div>
+          <span className="logo-title">
+            <span className="gradient-text">MAN</span>ish
+          </span>
+        </NavLink>
 
-        {/* Desktop Menu */}
-        <div className="desktop-menu">
-          <ul className="nav-links">
-            {navLinks.map((link) => (
-              <li key={link.name}>
-                <a 
-                  href={link.href} 
-                  className={activeSection === link.id ? 'active' : ''}
-                >
-                  {link.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+        {/* Desktop Navigation Links */}
+        <div className="navbar-nav-pill">
+          {navLinks.map((link) => {
+            const isActive = location.pathname === link.path;
+            return (
+              <NavLink 
+                key={link.name} 
+                to={link.path}
+                className={`nav-item ${isActive ? 'active' : ''}`}
+              >
+                {isActive && (
+                  <motion.div 
+                    layoutId="activePill"
+                    className="active-pill-indicator"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <span className="nav-item-text">{link.name}</span>
+              </NavLink>
+            );
+          })}
         </div>
 
-        <div className="mobile-controls">
-          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+        {/* Actions (Cmd+K + Theme + Mobile Menu) */}
+        <div className="navbar-actions">
           <button 
-            className="menu-btn glass-card" 
-            onClick={() => setIsOpen(!isOpen)} 
-            style={{ padding: '8px', display: 'flex' }}
-            aria-label={isOpen ? "Close menu" : "Open menu"}
+            className="cmd-k-trigger-btn"
+            onClick={onOpenCmdK}
+            title="Open Command Palette (Ctrl+K)"
+            aria-label="Search and command palette"
+          >
+            <Search size={15} />
+            <span className="cmd-k-text">Search</span>
+            <span className="cmd-k-tag">⌘K</span>
+          </button>
+
+          <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+
+          <button 
+            className="mobile-hamburger-btn"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={isOpen}
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
+      </nav>
 
-      </div>
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            className="mobile-menu-overlay"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="mobile-menu-content glass-card">
+              <div className="mobile-search-row">
+                <button 
+                  className="mobile-search-btn btn-secondary btn-block"
+                  onClick={() => { setIsOpen(false); onOpenCmdK(); }}
+                >
+                  <Search size={16} /> Quick Search / Command (Ctrl+K)
+                </button>
+              </div>
 
-      {/* Mobile Menu Overlay - Moved outside container to avoid flex constraints */}
-      <div className={`mobile-menu ${isOpen ? 'open glass-card' : ''}`}>
-        <ul className="mobile-nav-links">
-          {navLinks.map((link) => (
-            <li key={link.name}>
-              <a 
-                href={link.href} 
-                onClick={() => setIsOpen(false)}
-                className={activeSection === link.id ? 'active' : ''}
-              >
-                {link.name}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </nav>
+              <ul className="mobile-nav-list">
+                {navLinks.map((link) => (
+                  <li key={link.name}>
+                    <NavLink 
+                      to={link.path}
+                      className={({ isActive }) => `mobile-nav-link ${isActive ? 'active' : ''}`}
+                    >
+                      <span>{link.name}</span>
+                      <Sparkles size={16} className="mobile-sparkle" />
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
   );
 };
 

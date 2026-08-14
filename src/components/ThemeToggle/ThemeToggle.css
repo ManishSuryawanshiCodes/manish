@@ -1,6 +1,6 @@
 .theme-toggle {
-  width: 45px;
-  height: 45px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -8,16 +8,24 @@
   cursor: pointer;
   padding: 0;
   color: var(--text-primary);
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
 }
 
 .sun-icon {
-  color: #fbbf24;
+  color: #f59e0b;
 }
 
 .moon-icon {
-  color: #6366f1;
+  color: #818cf8;
 }
 
 .theme-toggle:hover {
   transform: scale(1.1) rotate(15deg);
+  border-color: var(--accent-primary);
+  box-shadow: var(--shadow-glow);
 }

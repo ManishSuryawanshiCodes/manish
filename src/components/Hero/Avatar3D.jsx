@@ -1,180 +1,329 @@
 import React, { useRef, useEffect, useState, Suspense, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF, useAnimations, PerspectiveCamera, Environment, ContactShadows, Float, Html, Preload } from '@react-three/drei';
+import { useGLTF, useAnimations, PerspectiveCamera, Environment, ContactShadows, Preload } from '@react-three/drei';
+import { useLocation } from 'react-router-dom';
+import { 
+  Bot, 
+  Minimize2, 
+  Maximize2, 
+  Sparkles, 
+  MessageSquare, 
+  Zap, 
+  Heart,
+  Volume2
+} from 'lucide-react';
 import * as THREE from 'three';
 
-// Error Boundary
+// Safe Error Boundary for 3D Context
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false };
   }
-  static getDerivedStateFromError(error) { return { hasError: true }; }
+  static getDerivedStateFromError() { return { hasError: true }; }
+  componentDidCatch(error, errorInfo) {
+    console.warn("Avatar3D context error:", error, errorInfo);
+  }
   render() {
     if (this.state.hasError) return null;
     return this.props.children;
   }
 }
 
-const AvatarModel = ({ scrollY, isScrolling, activeSection }) => {
+// 3D Holographic Base Pedestal
+const HolographicPedestal = () => {
+  const ringRef = useRef();
+
+  useFrame((state) => {
+    if (ringRef.current) {
+      ringRef.current.rotation.z += 0.015;
+    }
+  });
+
+  return (
+    <group position={[0, -2.48, 0]}>
+      {/* Outer Rotating Energy Ring */}
+      <mesh ref={ringRef} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[1.1, 1.3, 32]} />
+        <meshBasicMaterial 
+          color="#8b5cf6" 
+          transparent 
+          opacity={0.35} 
+          side={THREE.DoubleSide} 
+        />
+      </mesh>
+      
+      {/* Inner Glowing Disc */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]}>
+        <circleGeometry args={[1.0, 32]} />
+        <meshBasicMaterial 
+          color="#06b6d4" 
+          transparent 
+          opacity={0.15} 
+          side={THREE.DoubleSide} 
+        />
+      </mesh>
+    </group>
+  );
+};
+
+const AvatarModel = ({ currentAnim, isScrolling, onClickAvatar }) => {
   const group = useRef();
   const { scene, animations } = useGLTF('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/RobotExpressive/RobotExpressive.glb');
   const { actions } = useAnimations(animations, group);
   
   const [activeAnim, setActiveAnim] = useState('Idle');
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth < 768);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Initial greeting as April
+  // Handle animation transitions smoothly
   useEffect(() => {
-    if (actions && actions['Wave']) {
-      actions['Wave'].reset().fadeIn(0.5).play();
-      setTimeout(() => {
-        actions['Wave'].fadeOut(0.5);
-        actions['Idle'].reset().fadeIn(0.5).play();
-        setActiveAnim('Idle');
-      }, 3000);
-    }
-  }, [actions]);
-
-  // Enhanced Animation Logic
-  useEffect(() => {
-    if (!actions || activeAnim === 'Wave' && actions['Wave'].isRunning()) return;
+    if (!actions) return;
     
-    let nextAnim = 'Idle';
-    if (isScrolling) {
-      nextAnim = 'Walking';
-    } else if (activeSection === 'projects') {
-      nextAnim = 'Dance';
-    } else if (activeSection === 'skills') {
-      nextAnim = 'Jump';
-    } else if (activeSection === 'contact') {
-      nextAnim = 'Wave';
-    } else if (activeSection === 'about') {
-      nextAnim = 'ThumbsUp';
+    const targetAnim = isScrolling ? 'Walking' : currentAnim;
+    
+    if (activeAnim !== targetAnim && actions[targetAnim]) {
+      actions[activeAnim]?.fadeOut(0.35);
+      actions[targetAnim].reset().fadeIn(0.35).play();
+      setActiveAnim(targetAnim);
     }
+  }, [currentAnim, isScrolling, actions, activeAnim]);
 
-    if (activeAnim !== nextAnim && actions[nextAnim]) {
-      actions[activeAnim]?.fadeOut(0.5);
-      actions[nextAnim].reset().fadeIn(0.5).play();
-      setActiveAnim(nextAnim);
-    }
-  }, [isScrolling, activeSection, actions, activeAnim]);
-
-  useFrame((state, delta) => {
+  useFrame((state) => {
+    if (!group.current) return;
     const mouse = state.mouse;
     const time = state.clock.getElapsedTime();
     
-    // 1. Head Tracking (Intelligence)
+    // Head Tracking with smooth lerp
     const head = scene.getObjectByName('Head');
     if (head) {
-      head.rotation.y = THREE.MathUtils.lerp(head.rotation.y, mouse.x * 0.4, 0.1);
-      head.rotation.x = THREE.MathUtils.lerp(head.rotation.x, -mouse.y * 0.2, 0.1);
+      head.rotation.y = THREE.MathUtils.lerp(head.rotation.y, mouse.x * 0.45, 0.08);
+      head.rotation.x = THREE.MathUtils.lerp(head.rotation.x, -mouse.y * 0.2, 0.08);
     }
 
-    // 2. Side-by-side Smooth Oscillation
-    group.current.rotation.y = Math.sin(time * 0.4) * 0.15 + mouse.x * 0.2;
+    // Subtle side oscillation
+    group.current.rotation.y = Math.sin(time * 0.4) * 0.15 + mouse.x * 0.15;
 
-    // 3. Dynamic Physics-based Movement
-    const floatHeight = isScrolling ? 0.35 : Math.sin(time * 1.8) * 0.12;
-    group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, floatHeight - 2.6, 0.1);
+    // Physics float
+    const floatOffset = isScrolling ? 0.25 : Math.sin(time * 1.6) * 0.12;
+    group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, floatOffset - 2.5, 0.08);
     
-    // 4. Subtle "Breathing" Scale Effect
-    const baseScale = isMobile ? 0.5 : 0.7;
+    // Breathing scale effect
+    const baseScale = isMobile ? 0.52 : 0.72;
     const breathingScale = baseScale + Math.sin(time * 2) * 0.005;
     group.current.scale.set(breathingScale, breathingScale, breathingScale);
   });
 
   return (
-    <group ref={group} position={[0, -2.5, 0]}>
+    <group 
+      ref={group} 
+      position={[0, -2.5, 0]}
+      onClick={onClickAvatar}
+      onPointerOver={() => { document.body.style.cursor = 'pointer'; }}
+      onPointerOut={() => { document.body.style.cursor = 'default'; }}
+    >
       <primitive object={scene} />
+      <HolographicPedestal />
     </group>
   );
 };
 
 const Avatar3D = () => {
-  const [scrollY, setScrollY] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [showBubble, setShowBubble] = useState(true);
+  const [activeGesture, setActiveGesture] = useState('Wave');
+  const [customMessage, setCustomMessage] = useState("Hi! I'm April, MANish's AI companion! 👋");
+  const location = useLocation();
   const scrollTimeout = useRef();
 
+  // Scroll detection
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveSection(entry.target.id);
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    ['home', 'about', 'skills', 'projects', 'resume', 'contact'].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
     const handleScroll = () => {
-      setScrollY(window.scrollY);
       setIsScrolling(true);
       clearTimeout(scrollTimeout.current);
       scrollTimeout.current = setTimeout(() => setIsScrolling(false), 200);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      observer.disconnect();
+      clearTimeout(scrollTimeout.current);
     };
   }, []);
 
-  const sectionMessages = {
-    home: "Hi! I'm April 👋",
-    about: "I've helped Manish build amazing things! 🤖",
-    skills: "This arsenal is quite impressive! ⚡",
-    projects: "Shall we dance for these builds? 💃",
-    resume: "Manish's journey is truly unique 📄",
-    contact: "Send a message to my creator! ✉️"
+  // Update gesture and dialog on route change
+  useEffect(() => {
+    let anim = 'Idle';
+    let msg = "Hi! I'm April, MANish's AI companion! 👋";
+
+    switch (location.pathname) {
+      case '/':
+        anim = 'Wave';
+        msg = "Welcome to MANish's Digital Orbit! 👋";
+        break;
+      case '/about':
+        anim = 'ThumbsUp';
+        msg = "Explore MANish's story & mindset! 💡";
+        break;
+      case '/projects':
+        anim = 'Dance';
+        msg = "Check out these full-stack builds! 🚀";
+        break;
+      case '/skills':
+        anim = 'Jump';
+        msg = "An optimized technical arsenal! ⚡";
+        break;
+      case '/journey':
+        anim = 'Yes';
+        msg = "Milestones, awards & verified credentials! 🎓";
+        break;
+      case '/contact':
+        anim = 'Wave';
+        msg = "Let's build something epic together! ✉️";
+        break;
+      default:
+        anim = 'Idle';
+        msg = "Scanning environment...";
+    }
+
+    setActiveGesture(anim);
+    setCustomMessage(msg);
+    setShowBubble(true);
+
+    const timer = setTimeout(() => {
+      if (anim !== 'Idle') setActiveGesture('Idle');
+    }, 3200);
+
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
+
+  // Interactive Emote Click Triggers
+  const triggerEmote = (gestureName, message) => {
+    setActiveGesture(gestureName);
+    setCustomMessage(message);
+    setShowBubble(true);
+
+    setTimeout(() => {
+      setActiveGesture('Idle');
+    }, 3500);
+  };
+
+  // Click directly on April
+  const handleAvatarClick = (e) => {
+    e.stopPropagation();
+    const randomGestures = [
+      { anim: 'Wave', msg: "Hey there! Having fun exploring? 👋" },
+      { anim: 'Dance', msg: "Let's celebrate clean code! 💃" },
+      { anim: 'Jump', msg: "High energy, zero latency! ⚡" },
+      { anim: 'ThumbsUp', msg: "MANish is ready for new challenges! 👍" },
+      { anim: 'Yes', msg: "100% committed to engineering excellence! ✨" }
+    ];
+    const pick = randomGestures[Math.floor(Math.random() * randomGestures.length)];
+    triggerEmote(pick.anim, pick.msg);
   };
 
   return (
-    <div className="fixed-avatar-container">
-      <ErrorBoundary>
-        <Canvas 
-          shadows 
-          dpr={[1, 1.5]} 
-          gl={{ 
-            alpha: true, 
-            antialias: true, 
-            powerPreference: "high-performance",
-            preserveDrawingBuffer: true 
-          }}
-          aria-label="3D Interactive Robot Avatar named April"
-          role="img"
+    <div className={`fixed-avatar-container ${isMinimized ? 'minimized' : ''}`}>
+      {/* Control Action Bar */}
+      <div className="avatar-control-bar">
+        {!isMinimized && (
+          <div className="avatar-emote-bar glass-card">
+            <button 
+              onClick={() => triggerEmote('Wave', "April says hi! 👋")} 
+              title="Wave Gesture" 
+              className="emote-pill-btn"
+            >
+              👋
+            </button>
+            <button 
+              onClick={() => triggerEmote('Dance', "Grooving to efficient algorithms! 💃")} 
+              title="Dance Gesture" 
+              className="emote-pill-btn"
+            >
+              💃
+            </button>
+            <button 
+              onClick={() => triggerEmote('Jump', "Powering up! ⚡")} 
+              title="Jump Celebration" 
+              className="emote-pill-btn"
+            >
+              ⚡
+            </button>
+            <button 
+              onClick={() => triggerEmote('ThumbsUp', "Top-tier quality approved! 👍")} 
+              title="Thumbs Up" 
+              className="emote-pill-btn"
+            >
+              👍
+            </button>
+          </div>
+        )}
+
+        <button 
+          className="avatar-toggle-btn"
+          onClick={() => setIsMinimized(!isMinimized)}
+          title={isMinimized ? "Expand April (3D AI Companion)" : "Minimize Companion"}
+          aria-label="Toggle 3D avatar companion"
         >
-          <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={35} />
-          <ambientLight intensity={1} />
-          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} />
-          <pointLight position={[-10, -5, -10]} color="#7c3aed" intensity={2} />
+          {isMinimized ? <Maximize2 size={16} /> : <Minimize2 size={16} />}
+        </button>
+      </div>
+
+      {!isMinimized && (
+        <>
+          <ErrorBoundary>
+            <Canvas 
+              shadows 
+              dpr={[1, 1.5]} 
+              gl={{ 
+                alpha: true, 
+                antialias: true, 
+                powerPreference: "high-performance",
+                preserveDrawingBuffer: false 
+              }}
+              camera={{ position: [0, 0, 9], fov: 35 }}
+              aria-label="3D Interactive Robot Avatar named April"
+            >
+              {/* Studio Lighting Setup */}
+              <ambientLight intensity={1.1} />
+              <directionalLight position={[5, 10, 7]} intensity={1.8} castShadow />
+              <pointLight position={[-8, -4, -6]} color="#8b5cf6" intensity={2.2} />
+              <pointLight position={[6, -2, 6]} color="#06b6d4" intensity={2.0} />
+              <pointLight position={[0, 4, -5]} color="#f43f5e" intensity={1.2} />
+              
+              <Suspense fallback={null}>
+                <AvatarModel 
+                  currentAnim={activeGesture}
+                  isScrolling={isScrolling} 
+                  onClickAvatar={handleAvatarClick}
+                />
+                <Environment preset="city" />
+                <ContactShadows opacity={0.4} scale={8} blur={2.2} far={4} />
+                <Preload all />
+              </Suspense>
+            </Canvas>
+          </ErrorBoundary>
           
-          <Suspense fallback={null}>
-            <AvatarModel scrollY={scrollY} isScrolling={isScrolling} activeSection={activeSection} />
-            <Environment preset="city" />
-            <ContactShadows opacity={0.4} scale={10} blur={2.5} far={4} />
-            <Preload all />
-          </Suspense>
-        </Canvas>
-      </ErrorBoundary>
-      
-      {scrollY < 50 && (
-        <div className="avatar-interaction-bubble glass-card">
-          <p>{sectionMessages[activeSection] || "Scanning..."}</p>
-          <div className="bubble-tail"></div>
-        </div>
+          {showBubble && (
+            <div 
+              className="avatar-interaction-bubble glass-card"
+              onClick={() => setShowBubble(false)}
+              title="Click to dismiss"
+            >
+              <div className="bubble-sparkle-row">
+                <Sparkles size={12} className="bubble-spark" />
+                <span className="bubble-tag">APRIL AI</span>
+              </div>
+              <p>{customMessage}</p>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
