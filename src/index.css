@@ -382,44 +382,93 @@ ul {
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-/* Floating Avatar Component Styling */
+/* Floating Avatar & FAB System */
+.avatar-minimized-fab-wrapper {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  z-index: 950;
+}
+
+.avatar-fab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg), 0 0 25px rgba(139, 92, 246, 0.25);
+  cursor: pointer;
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.avatar-fab-btn:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: var(--shadow-lg), 0 0 35px rgba(139, 92, 246, 0.4);
+}
+
+.fab-avatar-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+  animation: pulseGlow 2s infinite;
+}
+
+.fab-bot-icon {
+  color: var(--accent-primary);
+}
+
+.fab-text {
+  letter-spacing: 0.02em;
+}
+
+/* Full 3D Desktop Dock */
 .fixed-avatar-container {
   position: fixed;
-  bottom: 12px;
-  right: 12px;
-  width: 330px;
-  height: 440px;
+  bottom: 15px;
+  right: 15px;
+  width: 320px;
+  height: 420px;
   z-index: 900;
   pointer-events: none;
-  transition: transform var(--transition-slow), opacity var(--transition-medium);
+  display: flex;
+  flex-direction: column;
 }
 
-.fixed-avatar-container.minimized {
-  height: 70px;
-  width: 70px;
-}
-
-.fixed-avatar-container canvas {
-  pointer-events: auto;
-  cursor: pointer;
-}
-
-.avatar-control-bar {
-  position: absolute;
-  bottom: 0;
-  right: 0;
+.avatar-top-controls {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 0.5rem;
   pointer-events: auto;
-  z-index: 910;
+  z-index: 915;
+  margin-bottom: -10px;
+  padding: 0 0.5rem;
+}
+
+.avatar-canvas-wrapper {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .avatar-emote-bar {
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  padding: 0.25rem 0.45rem;
+  padding: 0.25rem 0.5rem;
   border-radius: var(--radius-full);
   background: var(--bg-card);
   border: 1px solid var(--glass-border);
@@ -446,8 +495,8 @@ ul {
   backdrop-filter: blur(14px);
   border: 1px solid var(--glass-border);
   color: var(--text-secondary);
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -465,19 +514,18 @@ ul {
 
 .avatar-interaction-bubble {
   position: absolute;
-  top: 15px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 45px;
+  right: 15px;
   padding: 0.75rem 1.15rem;
-  max-width: 260px;
+  max-width: 250px;
   width: max-content;
   text-align: left;
   border-radius: var(--radius-lg);
   background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--glass-border);
-  z-index: 905;
+  z-index: 920;
   box-shadow: var(--shadow-lg), var(--shadow-glow);
   pointer-events: auto;
   cursor: pointer;
@@ -513,23 +561,43 @@ ul {
 }
 
 @keyframes bubblePop {
-  from { opacity: 0; transform: translate(-50%, 15px) scale(0.9); }
-  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  from { opacity: 0; transform: translateY(10px) scale(0.92); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+/* Mobile Responsive Sheet Behavior for Avatar */
 @media (max-width: 768px) {
   .fixed-avatar-container {
-    width: 220px;
-    height: 280px;
-    bottom: 8px;
-    right: 4px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 340px;
+    background: var(--bg-card);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    border-top: 1px solid var(--glass-border);
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
+    z-index: 1100;
+    pointer-events: auto;
+    padding: 1rem;
   }
-  
+
+  .avatar-top-controls {
+    justify-content: space-between;
+    margin-bottom: 0;
+    padding: 0;
+  }
+
   .avatar-interaction-bubble {
-    top: -45px;
-    font-size: 0.75rem;
-    padding: 0.5rem 0.85rem;
-    max-width: 200px;
+    top: 60px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    max-width: 280px;
+    font-size: 0.82rem;
   }
 }
 
