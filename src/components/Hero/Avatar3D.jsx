@@ -252,38 +252,6 @@ const Avatar3D = () => {
           </Canvas>
         </ErrorBoundary>
       </div>
-
-      {/* Mini Emote Action Strip */}
-      <div className="compact-emote-strip glass-card">
-        <button 
-          onClick={(e) => { e.stopPropagation(); triggerEmote('Wave', "April says hi! 👋"); }} 
-          title="Wave" 
-          className="mini-emote-btn"
-        >
-          👋
-        </button>
-        <button 
-          onClick={(e) => { e.stopPropagation(); triggerEmote('Dance', "Dancing! 💃"); }} 
-          title="Dance" 
-          className="mini-emote-btn"
-        >
-          💃
-        </button>
-        <button 
-          onClick={(e) => { e.stopPropagation(); triggerEmote('Jump', "Power Up! ⚡"); }} 
-          title="Jump" 
-          className="mini-emote-btn"
-        >
-          ⚡
-        </button>
-        <button 
-          onClick={(e) => { e.stopPropagation(); triggerEmote('ThumbsUp', "Approved! 👍"); }} 
-          title="Thumbs Up" 
-          className="mini-emote-btn"
-        >
-          👍
-        </button>
-      </div>
     </div>
   );
 };
