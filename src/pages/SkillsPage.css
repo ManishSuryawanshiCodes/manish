@@ -1,33 +1,43 @@
 .skills-page {
   display: flex;
   flex-direction: column;
+  padding-bottom: 5rem;
 }
 
+/* Skills Systems Grid */
 .skills-systems-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: 1.5rem;
-  margin-bottom: 4rem;
+  margin-bottom: 3.5rem;
+  min-width: 0;
 }
 
 .skill-system-card {
-  padding: 2rem;
+  padding: 1.85rem;
   border-radius: var(--radius-xl);
   display: flex;
   flex-direction: column;
   background: var(--bg-card);
+  min-width: 0;
+  transition: all var(--transition-fast);
+}
+
+.skill-system-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(139, 92, 246, 0.4);
 }
 
 .system-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .system-icon-box {
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   border-radius: var(--radius-md);
   background: rgba(139, 92, 246, 0.12);
   border: 1px solid rgba(139, 92, 246, 0.3);
@@ -35,6 +45,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .system-meta {
@@ -45,7 +56,7 @@
   display: block;
   font-size: 0.65rem;
   font-weight: 800;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.14em;
   color: var(--text-muted);
 }
 
@@ -58,10 +69,11 @@
 }
 
 .system-category-title {
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.15rem;
   line-height: 1.3;
+  color: var(--text-primary);
 }
 
 .system-skills-chips {
@@ -75,14 +87,16 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.4rem 0.85rem;
+  padding: 0.4rem 0.8rem;
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--glass-border);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 500;
   color: var(--text-primary);
   transition: all var(--transition-fast);
+  max-width: 100%;
+  word-break: break-word;
 }
 
 .skill-badge-item:hover {
@@ -96,76 +110,88 @@
   height: 6px;
   border-radius: 50%;
   background: var(--accent-secondary);
+  flex-shrink: 0;
 }
 
 /* Frontier Tech Section */
+.frontier-section {
+  min-width: 0;
+}
+
 .frontier-card {
-  padding: 3rem;
+  padding: 2.75rem;
   border-radius: var(--radius-xl);
   display: grid;
-  grid-template-columns: 1fr 1.4fr;
-  gap: 3rem;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 2.5rem;
+  align-items: center;
   background: linear-gradient(135deg, rgba(8, 4, 25, 0.9), rgba(15, 7, 45, 0.8));
   border: 1px solid rgba(139, 92, 246, 0.25);
   box-shadow: var(--shadow-lg), 0 0 50px rgba(139, 92, 246, 0.15);
+  min-width: 0;
 }
 
 .frontier-left {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-width: 0;
 }
 
 .frontier-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.35rem 0.9rem;
+  padding: 0.35rem 0.85rem;
   border-radius: var(--radius-full);
   background: rgba(245, 158, 11, 0.12);
   border: 1px solid rgba(245, 158, 11, 0.3);
   color: #fbbf24;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.15rem;
   width: max-content;
+  max-width: 100%;
 }
 
 .frontier-title {
-  font-size: 2.5rem;
+  font-size: clamp(1.75rem, 4.5vw, 2.4rem);
   font-weight: 800;
-  line-height: 1.15;
-  margin-bottom: 1rem;
+  line-height: 1.2;
+  margin-bottom: 0.85rem;
 }
 
 .frontier-desc {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--text-secondary);
-  line-height: 1.7;
+  line-height: 1.65;
 }
 
 .frontier-goals-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 0.9rem;
+  min-width: 0;
 }
 
 .frontier-goal-item {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
-  padding: 1.25rem;
+  gap: 1.15rem;
+  padding: 1.15rem 1.25rem;
   border-radius: var(--radius-lg);
   background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
   transition: all var(--transition-fast);
+  min-width: 0;
 }
 
 .frontier-goal-item:hover {
   background: rgba(139, 92, 246, 0.12);
   border-color: var(--accent-primary);
-  transform: translateX(6px);
+  transform: translateX(4px);
 }
 
 .goal-icon-box {
@@ -173,6 +199,7 @@
   height: 40px;
   border-radius: 50%;
   background: rgba(6, 182, 212, 0.15);
+  border: 1px solid rgba(6, 182, 212, 0.3);
   color: var(--accent-secondary);
   display: flex;
   align-items: center;
@@ -180,14 +207,21 @@
   flex-shrink: 0;
 }
 
+.goal-text-content {
+  min-width: 0;
+  flex: 1;
+}
+
 .goal-title {
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   font-weight: 700;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.15rem;
+  line-height: 1.3;
+  color: var(--text-primary);
 }
 
 .goal-status {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--accent-secondary);
   font-weight: 600;
 }
@@ -207,10 +241,66 @@
   background: rgba(124, 58, 237, 0.1);
 }
 
-@media (max-width: 900px) {
+/* Responsive Media Queries */
+@media (max-width: 960px) {
   .frontier-card {
     grid-template-columns: 1fr;
     padding: 2rem;
     gap: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .skills-page {
+    padding-bottom: 6.5rem;
+  }
+
+  .skills-systems-grid {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .skill-system-card {
+    padding: 1.25rem 1.15rem;
+  }
+
+  .system-icon-box {
+    width: 40px;
+    height: 40px;
+  }
+
+  .system-category-title {
+    font-size: 1.15rem;
+    margin-bottom: 0.95rem;
+  }
+
+  .skill-badge-item {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.78rem;
+  }
+
+  .frontier-card {
+    padding: 1.35rem 1.15rem;
+    gap: 1.5rem;
+  }
+
+  .frontier-desc {
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .frontier-goal-item {
+    padding: 0.95rem 1rem;
+    gap: 0.85rem;
+  }
+
+  .goal-icon-box {
+    width: 36px;
+    height: 36px;
+  }
+
+  .goal-title {
+    font-size: 0.9rem;
   }
 }
