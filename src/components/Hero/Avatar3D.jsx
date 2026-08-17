@@ -5,11 +5,23 @@ import { useLocation } from 'react-router-dom';
 import { Sparkles, Bot } from 'lucide-react';
 import * as THREE from 'three';
 
-// Detect WebGL availability to prevent Three.js Canvas crashes on unsupported browsers/devices
+const MODEL_PATH = '/models/RobotExpressive.glb';
+
+// Preload the local model immediately for instant rendering
+try {
+  useGLTF.preload(MODEL_PATH);
+} catch {
+  // Gracefully handle preload failure
+}
+
+// Detect WebGL availability
 const isWebGLAvailable = () => {
   try {
     const canvas = document.createElement('canvas');
-    return !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+    return !!(
+      window.WebGLRenderingContext &&
+      (canvas.getContext('webgl') || canvas.getContext('experimental-webgl'))
+    );
   } catch {
     return false;
   }
@@ -27,7 +39,7 @@ class Safe3DBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.warn("Avatar3D GLTF/Context fallback activated:", error, errorInfo);
+    console.warn("Avatar3D switching to 2D holographic mode:", error, errorInfo);
     if (this.props.onError) {
       this.props.onError();
     }
@@ -82,16 +94,20 @@ const HolographicPedestal = () => {
 const AvatarModel = ({ currentAnim, isScrolling, onClickAvatar }) => {
   const group = useRef();
   const activeAnimRef = useRef('Idle');
-  const { scene, animations } = useGLTF('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/RobotExpressive/RobotExpressive.glb');
+  const { scene, animations } = useGLTF(MODEL_PATH);
   const { actions } = useAnimations(animations, group);
 
+  // Play and cross-fade animations smoothly
   useEffect(() => {
     if (!actions) return;
     const targetAnim = isScrolling ? 'Walking' : currentAnim;
-    
+
     if (activeAnimRef.current !== targetAnim && actions[targetAnim]) {
-      actions[activeAnimRef.current]?.fadeOut(0.3);
-      actions[targetAnim].reset().fadeIn(0.3).play();
+      const prevAction = actions[activeAnimRef.current];
+      const nextAction = actions[targetAnim];
+
+      if (prevAction) prevAction.fadeOut(0.25);
+      nextAction.reset().fadeIn(0.25).play();
       activeAnimRef.current = targetAnim;
     }
   }, [currentAnim, isScrolling, actions]);
@@ -101,27 +117,27 @@ const AvatarModel = ({ currentAnim, isScrolling, onClickAvatar }) => {
     const mouse = state.mouse;
     const time = state.clock.getElapsedTime();
     
-    // Head Tracking
+    // Head Tracking with safe lookup
     try {
       const head = scene.getObjectByName('Head');
       if (head) {
-        head.rotation.y = THREE.MathUtils.lerp(head.rotation.y, mouse.x * 0.4, 0.08);
-        head.rotation.x = THREE.MathUtils.lerp(head.rotation.x, -mouse.y * 0.2, 0.08);
+        head.rotation.y = THREE.MathUtils.lerp(head.rotation.y, mouse.x * 0.45, 0.08);
+        head.rotation.x = THREE.MathUtils.lerp(head.rotation.x, -mouse.y * 0.25, 0.08);
       }
     } catch {
-      // Safe guard
+      // Safe guard against mesh traversal issues
     }
 
-    // Side oscillation
-    group.current.rotation.y = Math.sin(time * 0.4) * 0.12 + mouse.x * 0.12;
+    // Natural idle body swaying
+    group.current.rotation.y = Math.sin(time * 0.5) * 0.1 + mouse.x * 0.12;
 
-    // Physics float
-    const floatOffset = isScrolling ? 0.2 : Math.sin(time * 1.6) * 0.1;
+    // Floating animation
+    const floatOffset = isScrolling ? 0.18 : Math.sin(time * 1.8) * 0.08;
     group.current.position.y = THREE.MathUtils.lerp(group.current.position.y, floatOffset - 2.45, 0.08);
     
     // Subtle breathing scale
-    const baseScale = 0.72;
-    const breathingScale = baseScale + Math.sin(time * 2) * 0.005;
+    const baseScale = 0.74;
+    const breathingScale = baseScale + Math.sin(time * 2.2) * 0.006;
     group.current.scale.set(breathingScale, breathingScale, breathingScale);
   });
 
@@ -143,7 +159,7 @@ const HologramCompanion = ({ onClick, activeGesture }) => {
     <div className="hologram-companion-avatar" onClick={onClick}>
       <div className="hologram-outer-ring"></div>
       <div className="hologram-inner-core">
-        <Bot size={34} className={`hologram-bot-icon ${activeGesture !== 'Idle' ? 'active-emote' : ''}`} />
+        <Bot size={32} className={`hologram-bot-icon ${activeGesture !== 'Idle' ? 'active-emote' : ''}`} />
       </div>
       <div className="hologram-pedestal-light"></div>
     </div>
@@ -192,7 +208,7 @@ const Avatar3D = () => {
     };
   }, []);
 
-  // Update gesture and dialog on route change
+  // Update gesture and speech bubble on route change
   useEffect(() => {
     const { anim, msg } = getRouteGesture(location.pathname);
 
@@ -200,12 +216,12 @@ const Avatar3D = () => {
       setActiveGesture(anim);
       setCustomMessage(msg);
       setShowBubble(true);
-    }, 10);
+    }, 50);
 
     const resetTimer = setTimeout(() => {
       if (anim !== 'Idle') setActiveGesture('Idle');
       setShowBubble(false);
-    }, 3200);
+    }, 3400);
 
     return () => {
       clearTimeout(activateTimer);
@@ -225,7 +241,9 @@ const Avatar3D = () => {
   };
 
   const handleAvatarClick = (e) => {
-    if (e) e.stopPropagation();
+    if (e) {
+      if (typeof e.stopPropagation === 'function') e.stopPropagation();
+    }
     const randomGestures = [
       { anim: 'Wave', msg: "Hey there! 👋" },
       { anim: 'Dance', msg: "Clean code! 💃" },
@@ -251,7 +269,12 @@ const Avatar3D = () => {
       )}
 
       {/* Avatar Container */}
-      <div className="compact-canvas-box" onClick={handleAvatarClick} title="Click April to interact!">
+      <div 
+        className="compact-canvas-box" 
+        onClick={handleAvatarClick} 
+        onTouchEnd={handleAvatarClick}
+        title="Click April to interact!"
+      >
         {use3DFallback ? (
           <HologramCompanion onClick={handleAvatarClick} activeGesture={activeGesture} />
         ) : (
@@ -261,14 +284,14 @@ const Avatar3D = () => {
           >
             <Canvas 
               shadows 
-              dpr={[1, 1.5]} 
+              dpr={[1, 2]} 
               gl={{ 
                 alpha: true, 
                 antialias: true, 
                 powerPreference: "high-performance",
                 preserveDrawingBuffer: false 
               }}
-              camera={{ position: [0, 0, 8.5], fov: 35 }}
+              camera={{ position: [0, 0, 8.2], fov: 35 }}
               aria-label="3D Avatar Companion April"
               onCreated={({ gl }) => {
                 gl.domElement.addEventListener('webglcontextlost', (e) => {
@@ -278,9 +301,9 @@ const Avatar3D = () => {
                 }, false);
               }}
             >
-              <ambientLight intensity={1.4} />
+              <ambientLight intensity={1.5} />
               <directionalLight position={[5, 10, 7]} intensity={2.0} />
-              <pointLight position={[-6, -3, -5]} color="#8b5cf6" intensity={2.5} />
+              <pointLight position={[-6, -3, -5]} color="#8b5cf6" intensity={2.6} />
               <pointLight position={[6, -2, 5]} color="#06b6d4" intensity={2.2} />
               
               <Suspense fallback={null}>

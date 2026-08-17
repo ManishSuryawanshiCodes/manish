@@ -396,22 +396,26 @@ ul {
 }
 
 .compact-canvas-box {
-  width: 150px;
-  height: 185px;
+  width: 140px;
+  height: 175px;
   pointer-events: auto;
   cursor: pointer;
-  filter: drop-shadow(0 8px 24px rgba(139, 92, 246, 0.25));
+  filter: drop-shadow(0 8px 24px rgba(139, 92, 246, 0.3));
   transition: transform var(--transition-fast);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .compact-canvas-box:hover {
-  transform: scale(1.06);
+  transform: scale(1.05);
 }
 
 .compact-canvas-box canvas {
   width: 100% !important;
   height: 100% !important;
   pointer-events: auto;
+  touch-action: manipulation;
 }
 
 .compact-avatar-bubble {
@@ -507,29 +511,36 @@ ul {
   to { transform: rotate(360deg); }
 }
 
+@media (max-width: 1024px) {
+  .compact-canvas-box {
+    width: 120px;
+    height: 150px;
+  }
+}
+
 @media (max-width: 768px) {
   .compact-avatar-dock {
-    bottom: 6px;
-    right: 6px;
+    bottom: 8px;
+    right: 8px;
     z-index: 80;
   }
 
   .compact-canvas-box {
-    width: 95px;
-    height: 120px;
+    width: 100px;
+    height: 125px;
   }
 
   .compact-avatar-bubble {
     font-size: 0.68rem;
-    padding: 0.2rem 0.55rem;
+    padding: 0.22rem 0.6rem;
     margin-bottom: -6px;
   }
 }
 
 @media (max-width: 480px) {
   .compact-canvas-box {
-    width: 82px;
-    height: 105px;
+    width: 88px;
+    height: 110px;
   }
 }
 
